@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yancy.project.mapper.TaskMapper">
+
+    <resultMap id="BaseResultMap" type="com.yancy.project.model.entity.Task">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="taskName" column="task_name" jdbcType="VARCHAR"/>
+            <result property="taskDescription" column="task_description" jdbcType="VARCHAR"/>
+            <result property="taskTag" column="task_tag" jdbcType="VARCHAR"/>
+            <result property="isFinish" column="is_finish" jdbcType="TINYINT"/>
+            <result property="isDelay" column="is_delay" jdbcType="TINYINT"/>
+            <result property="finishTime" column="finish_time" jdbcType="TIMESTAMP"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,task_name,task_description,
+        task_tag,is_finish,is_delay,
+        finish_time,user_id,create_time,
+        update_time,is_delete
+    </sql>
+</mapper>
