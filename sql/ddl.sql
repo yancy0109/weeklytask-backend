@@ -16,7 +16,7 @@ create table if not exists user
     user_password varchar(512)                           not null comment '密码',
     user_status   tinyint default 0                      not null comment '状态 0 - 正常',
     create_time   datetime                               not null comment '创建时间',
-    update_time   datetime                               not null on update CURRENT_TIMESTAMP comment '更新时间',
+    update_time   datetime                               not null comment '更新时间',
     is_delete     tinyint      default 0                 not null comment '是否删除',
     constraint uni_userAccount
         unique (user_account)
@@ -29,7 +29,7 @@ create table if not exists tag
     tags          varchar(512)                           not null comment '用户自定义标签',
     user_id        bigint                                not null comment '用户 id',
     create_time   datetime                               not null comment '创建时间',
-    update_time   datetime                               not null on update CURRENT_TIMESTAMP comment '更新时间',
+    update_time   datetime                               not null comment '更新时间',
     is_delete     tinyint      default 0                 not null comment '是否删除'
 ) comment '标签';
 
@@ -48,6 +48,6 @@ create table if not exists task
     finish_time    datetime                           not null comment '完成时间',
     user_id        bigint                             not null comment '用户 id',
     create_time    datetime                           not null comment '创建时间',
-    update_time    datetime                           not null on update CURRENT_TIMESTAMP comment '更新时间',
+    update_time    datetime                           not null comment '更新时间',
     is_delete      tinyint  default 0                 not null comment '是否删除'
 ) comment '任务';
