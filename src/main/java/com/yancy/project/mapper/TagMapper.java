@@ -1,7 +1,9 @@
 package com.yancy.project.mapper;
 
+import com.yancy.project.model.dto.tag.TagAddRequest;
 import com.yancy.project.model.entity.Tag;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author 11567
@@ -11,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface TagMapper extends BaseMapper<Tag> {
 
+    int addUserTag(@Param("tagName") String tagName,@Param("userId") Long userId);
 }
 
 

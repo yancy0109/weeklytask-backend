@@ -17,4 +17,8 @@
         id,tags,user_id,
         create_time,update_time,is_delete
     </sql>
+
+    <update id="addUserTag" >
+        update tag set tags = concat(tags, ',', #{tagName}) where user_id = #{userId};
+    </update>
 </mapper>

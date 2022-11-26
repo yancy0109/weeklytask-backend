@@ -1,15 +1,21 @@
 package com.yancy.project.service.impl;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yancy.project.common.ErrorCode;
+import com.yancy.project.constant.TagConstant;
 import com.yancy.project.exception.BusinessException;
+import com.yancy.project.mapper.TagMapper;
 import com.yancy.project.mapper.UserMapper;
+import com.yancy.project.model.entity.Tag;
 import com.yancy.project.model.entity.User;
+import com.yancy.project.service.TagService;
 import com.yancy.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
@@ -32,12 +38,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private TagService tagService;
+
     /**
      * 盐值，混淆密码
      */
     private static final String SALT = "yancy";
 
     @Override
+//    @Transactional
     public long userRegister(String userAccount, String userName, String userPassword, String checkPassword) {
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
@@ -78,7 +88,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
             }
-            return user.getId();
+            Long userId = user.getId();
+
+            // 按照模板创建用户个人标签
+            QueryWrapper<Tag> query = new QueryWrapper<>();
+            query.eq("user_id", TagConstant.STANDARD_TAG_USER_ID );
+            Tag constantTag = tagService.getOne(query);
+
+            constantTag.setId(null);
+            constantTag.setUserId(userId);
+            constantTag.setCreateTime(null);
+            constantTag.setUpdateTime(null);
+            tagService.save(constantTag);
+            // 返回用户Id
+            return userId;
         }
     }
 

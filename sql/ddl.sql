@@ -34,7 +34,7 @@ create table if not exists tag
 ) comment '标签';
 
 # 初始化标签模板
-insert into tag values (1, '学习, CODING, 单词, 娱乐',0, now(), now(), 0);
+insert into tag values (1, '学习,CODING,单词,娱乐',0, now(), now(), 0);
 
 -- 任务表
 create table if not exists task

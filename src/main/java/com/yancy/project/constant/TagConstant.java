@@ -5,6 +5,6 @@ package com.yancy.project.constant;
  */
 public interface TagConstant {
 
-    public static String STANDARD_TAG_ID = "1";
+    String STANDARD_TAG_USER_ID = "0";
 
 }
