@@ -1,12 +1,10 @@
 package com.yancy.project.service.impl;
-import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yancy.project.common.ErrorCode;
-import com.yancy.project.constant.TagConstant;
+import com.yancy.project.model.enums.TagConstant;
 import com.yancy.project.exception.BusinessException;
-import com.yancy.project.mapper.TagMapper;
 import com.yancy.project.mapper.UserMapper;
 import com.yancy.project.model.entity.Tag;
 import com.yancy.project.model.entity.User;
@@ -15,7 +13,6 @@ import com.yancy.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;

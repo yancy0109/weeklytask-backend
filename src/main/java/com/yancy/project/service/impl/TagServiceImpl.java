@@ -8,7 +8,7 @@ import com.yancy.project.model.dto.tag.TagAddRequest;
 import com.yancy.project.model.dto.tag.TagDeleteRequest;
 import com.yancy.project.model.entity.Tag;
 import com.yancy.project.model.entity.User;
-import com.yancy.project.model.vo.UserTags;
+import com.yancy.project.model.vo.UserTagsVo;
 import com.yancy.project.service.TagService;
 import com.yancy.project.mapper.TagMapper;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -57,8 +58,17 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag>
             if (!oldTags.contains(tagName)) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR.getCode(), "标签名不存在");
             }
-            // 删除Tag
-            String newTags = oldTags.replace(",tagName,", ",");
+            String newTags = Arrays.stream(oldTags.split(",")).filter(
+                    item -> {
+                        if (!item.equals(tagName)) {
+                            return true;
+                        }
+                        return false;
+                    }
+            ).collect(Collectors.toList()).toString()
+                    .replace("[","")
+                    .replace("]","")
+                    .replace(" ","");
             oldTag.setTags(newTags);
             boolean result = this.updateById(oldTag);
             return result;
@@ -74,16 +84,16 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag>
     }
 
     @Override
-    public UserTags getUserTags(User loginUser) {
+    public UserTagsVo getUserTags(User loginUser) {
         Long userId = loginUser.getId();
         Tag tag = this.getTagByUserId(userId);
         // 对用户tag进行拆分
         List<String> tags = Arrays.stream(tag.getTags().split(",")).collect(Collectors.toList());
         // 创建返回对象
-        UserTags userTags = new UserTags();
-        userTags.setUserAccount(loginUser.getUserAccount());
-        userTags.setTags(tags);
-        return userTags;
+        UserTagsVo userTagsVo = new UserTagsVo();
+        userTagsVo.setUserAccount(loginUser.getUserAccount());
+        userTagsVo.setTags(tags);
+        return userTagsVo;
     }
 }
 

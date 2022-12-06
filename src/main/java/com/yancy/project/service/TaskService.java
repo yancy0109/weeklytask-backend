@@ -1,7 +1,9 @@
 package com.yancy.project.service;
 
+import com.yancy.project.model.dto.task.TaskAddRequest;
 import com.yancy.project.model.entity.Task;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yancy.project.model.entity.User;
 
 /**
 * @author 11567
@@ -10,4 +12,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface TaskService extends IService<Task> {
 
+    /**
+     * 用户创建任务
+     * @param taskAddRequest
+     * @param loginUser
+     * @return
+     */
+    boolean createUserTask(TaskAddRequest taskAddRequest, User loginUser);
 }

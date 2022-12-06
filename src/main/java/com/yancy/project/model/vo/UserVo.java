@@ -3,7 +3,6 @@ package com.yancy.project.model.vo;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 用户视图
@@ -11,7 +10,7 @@ import java.util.Date;
  * @TableName user
  */
 @Data
-public class UserVO implements Serializable {
+public class UserVo implements Serializable {
     /**
      * id
      */

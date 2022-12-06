@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 @Data
-public class UserTags implements Serializable {
+public class UserTagsVo implements Serializable {
 
     private static final long serialVersionUID = -3167259566125225559L;
 

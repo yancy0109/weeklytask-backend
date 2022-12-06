@@ -5,7 +5,7 @@ import com.yancy.project.model.dto.tag.TagDeleteRequest;
 import com.yancy.project.model.entity.Tag;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yancy.project.model.entity.User;
-import com.yancy.project.model.vo.UserTags;
+import com.yancy.project.model.vo.UserTagsVo;
 
 /**
 * @author 11567
@@ -34,12 +34,12 @@ public interface TagService extends IService<Tag> {
      * @param userId
      * @return
      */
-    public Tag getTagByUserId(Long userId);
+    Tag getTagByUserId(Long userId);
 
     /**
      * 获取用户Tags
      * @param loginUser
      * @return
      */
-    UserTags getUserTags(User loginUser);
+    UserTagsVo getUserTags(User loginUser);
 }

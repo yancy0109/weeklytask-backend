@@ -7,7 +7,7 @@ import com.yancy.project.exception.BusinessException;
 import com.yancy.project.model.dto.tag.TagAddRequest;
 import com.yancy.project.model.dto.tag.TagDeleteRequest;
 import com.yancy.project.model.entity.User;
-import com.yancy.project.model.vo.UserTags;
+import com.yancy.project.model.vo.UserTagsVo;
 import com.yancy.project.service.TagService;
 import com.yancy.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -61,10 +61,10 @@ public class TagController {
         return ResultUtils.success(result);
     }
     @GetMapping("/get")
-    public BaseResponse<UserTags> getUserTag(HttpServletRequest request) {
+    public BaseResponse<UserTagsVo> getUserTag(HttpServletRequest request) {
         User loginUser = userService.getLoginUser(request);
-        UserTags userTags = tagService.getUserTags(loginUser);
-        return ResultUtils.success(userTags);
+        UserTagsVo userTagsVo = tagService.getUserTags(loginUser);
+        return ResultUtils.success(userTagsVo);
     }
 
 }

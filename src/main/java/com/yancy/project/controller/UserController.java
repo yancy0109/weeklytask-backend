@@ -10,7 +10,7 @@ import com.yancy.project.common.ResultUtils;
 import com.yancy.project.exception.BusinessException;
 import com.yancy.project.model.dto.user.*;
 import com.yancy.project.model.entity.User;
-import com.yancy.project.model.vo.UserVO;
+import com.yancy.project.model.vo.UserVo;
 import com.yancy.project.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -100,9 +100,9 @@ public class UserController {
      * @return
      */
     @GetMapping("/get/login")
-    public BaseResponse<UserVO> getLoginUser(HttpServletRequest request) {
+    public BaseResponse<UserVo> getLoginUser(HttpServletRequest request) {
         User user = userService.getLoginUser(request);
-        UserVO userVO = new UserVO();
+        UserVo userVO = new UserVo();
         BeanUtils.copyProperties(user, userVO);
         return ResultUtils.success(userVO);
     }
@@ -174,12 +174,12 @@ public class UserController {
      * @return
      */
     @GetMapping("/get")
-    public BaseResponse<UserVO> getUserById(int id, HttpServletRequest request) {
+    public BaseResponse<UserVo> getUserById(int id, HttpServletRequest request) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         User user = userService.getById(id);
-        UserVO userVO = new UserVO();
+        UserVo userVO = new UserVo();
         BeanUtils.copyProperties(user, userVO);
         return ResultUtils.success(userVO);
     }
@@ -192,19 +192,19 @@ public class UserController {
      * @return
      */
     @GetMapping("/list")
-    public BaseResponse<List<UserVO>> listUser(UserQueryRequest userQueryRequest, HttpServletRequest request) {
+    public BaseResponse<List<UserVo>> listUser(UserQueryRequest userQueryRequest, HttpServletRequest request) {
         User userQuery = new User();
         if (userQueryRequest != null) {
             BeanUtils.copyProperties(userQueryRequest, userQuery);
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>(userQuery);
         List<User> userList = userService.list(queryWrapper);
-        List<UserVO> userVOList = userList.stream().map(user -> {
-            UserVO userVO = new UserVO();
+        List<UserVo> userVoList = userList.stream().map(user -> {
+            UserVo userVO = new UserVo();
             BeanUtils.copyProperties(user, userVO);
             return userVO;
         }).collect(Collectors.toList());
-        return ResultUtils.success(userVOList);
+        return ResultUtils.success(userVoList);
     }
 
     /**
@@ -215,7 +215,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/list/page")
-    public BaseResponse<Page<UserVO>> listUserByPage(UserQueryRequest userQueryRequest, HttpServletRequest request) {
+    public BaseResponse<Page<UserVo>> listUserByPage(UserQueryRequest userQueryRequest, HttpServletRequest request) {
         long current = 1;
         long size = 10;
         User userQuery = new User();
@@ -226,13 +226,13 @@ public class UserController {
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>(userQuery);
         Page<User> userPage = userService.page(new Page<>(current, size), queryWrapper);
-        Page<UserVO> userVOPage = new PageDTO<>(userPage.getCurrent(), userPage.getSize(), userPage.getTotal());
-        List<UserVO> userVOList = userPage.getRecords().stream().map(user -> {
-            UserVO userVO = new UserVO();
+        Page<UserVo> userVOPage = new PageDTO<>(userPage.getCurrent(), userPage.getSize(), userPage.getTotal());
+        List<UserVo> userVoList = userPage.getRecords().stream().map(user -> {
+            UserVo userVO = new UserVo();
             BeanUtils.copyProperties(user, userVO);
             return userVO;
         }).collect(Collectors.toList());
-        userVOPage.setRecords(userVOList);
+        userVOPage.setRecords(userVoList);
         return ResultUtils.success(userVOPage);
     }
 

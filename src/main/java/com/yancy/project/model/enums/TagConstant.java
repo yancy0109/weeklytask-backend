@@ -1,4 +1,4 @@
-package com.yancy.project.constant;
+package com.yancy.project.model.enums;
 
 /**
  * @author yancy0109
