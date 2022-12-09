@@ -11,10 +11,9 @@ import java.io.Serializable;
  */
 @Data
 public class UserVo implements Serializable {
-    /**
-     * id
-     */
-//    private Long id;
+
+
+    private static final long serialVersionUID = 1764383847050508096L;
 
     /**
      * 用户昵称
@@ -51,5 +50,4 @@ public class UserVo implements Serializable {
      */
 //    private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
 }

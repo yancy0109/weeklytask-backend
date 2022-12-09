@@ -2,16 +2,19 @@ package com.yancy.project.controller;
 
 import com.yancy.project.common.BaseResponse;
 import com.yancy.project.common.ErrorCode;
+import com.yancy.project.common.PageRequest;
 import com.yancy.project.common.ResultUtils;
 import com.yancy.project.exception.BusinessException;
 import com.yancy.project.model.dto.task.TaskAddRequest;
 import com.yancy.project.model.entity.User;
+import com.yancy.project.model.vo.UserTaskVo;
 import com.yancy.project.service.TagService;
 import com.yancy.project.service.TaskService;
 import com.yancy.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yancy0109
@@ -49,12 +53,18 @@ public class TaskController {
         String taskName = taskAddRequest.getTaskName();
         String taskTag = taskAddRequest.getTaskTag();
         Date finishTime = taskAddRequest.getFinishTime();
-        if (StringUtils.isAllBlank(taskName, taskTag) && ObjectUtils.isEmpty(finishTime)) {
+        if (StringUtils.isAllBlank(taskName, taskTag) || ObjectUtils.isEmpty(finishTime)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         User loginUser = userService.getLoginUser(request);
         boolean result = taskService.createUserTask(taskAddRequest, loginUser);
         return ResultUtils.success(result);
+    }
+
+    @GetMapping("/page")
+    public BaseResponse<List<UserTaskVo>> getUserTasks(PageRequest pageRequest, HttpServletRequest request){
+
+        return ResultUtils.success(null);
     }
 
 }
