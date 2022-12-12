@@ -6,6 +6,7 @@ import com.yancy.project.common.PageRequest;
 import com.yancy.project.common.ResultUtils;
 import com.yancy.project.exception.BusinessException;
 import com.yancy.project.model.dto.task.TaskAddRequest;
+import com.yancy.project.model.entity.Task;
 import com.yancy.project.model.entity.User;
 import com.yancy.project.model.vo.UserTaskVo;
 import com.yancy.project.service.TagService;
@@ -14,10 +15,7 @@ import com.yancy.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +47,7 @@ public class TaskController {
      * @return
      */
     @PostMapping("/add")
-    public BaseResponse<Boolean> createUserTask(TaskAddRequest taskAddRequest, HttpServletRequest request) {
+    public BaseResponse<Boolean> createUserTask(@RequestBody TaskAddRequest taskAddRequest, HttpServletRequest request) {
         String taskName = taskAddRequest.getTaskName();
         String taskTag = taskAddRequest.getTaskTag();
         Date finishTime = taskAddRequest.getFinishTime();
@@ -61,10 +59,29 @@ public class TaskController {
         return ResultUtils.success(result);
     }
 
+    /**
+     * 分页查询用户任务列表
+     * @param pageRequest
+     * @param request
+     * @return
+     */
     @GetMapping("/page")
-    public BaseResponse<List<UserTaskVo>> getUserTasks(PageRequest pageRequest, HttpServletRequest request){
-
+    public BaseResponse<List<UserTaskVo>> getUserTasks(@RequestBody PageRequest pageRequest, HttpServletRequest request){
+        User loginUser = userService.getLoginUser(request);
+        taskService.getUserTasksPages(pageRequest, loginUser);
         return ResultUtils.success(null);
+    }
+
+    /**
+     * 按照结束时间倒叙查看任务列表
+     * @param request
+     * @return
+     */
+    @GetMapping("/list")
+    public BaseResponse<List<Task>> getUserTasks(HttpServletRequest request){
+        User loginUser = userService.getLoginUser(request);
+        List<Task> taskList = taskService.getUserTasks(loginUser);
+        return ResultUtils.success(taskList);
     }
 
 }

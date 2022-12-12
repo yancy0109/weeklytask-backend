@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class UserTaskVo implements Serializable {
 
-    private static final long serialVersionUID = 112306029282871786L;
+    private static final long serialVersionUID = -5585886379094336509L;
 
     /**
      * 任务名称
@@ -38,6 +38,11 @@ public class UserTaskVo implements Serializable {
      * 是否有延期
      */
     private Integer isDelay;
+
+    /**
+     * 是否超限
+     */
+    private Integer isExceed;
 
     /**
      * 完成时间

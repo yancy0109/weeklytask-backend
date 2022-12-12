@@ -1,21 +1,27 @@
 package com.yancy.project.service.impl;
+import com.google.common.collect.Lists;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yancy.project.common.ErrorCode;
+import com.yancy.project.common.PageRequest;
 import com.yancy.project.exception.BusinessException;
 import com.yancy.project.model.dto.task.TaskAddRequest;
 import com.yancy.project.model.entity.Task;
 import com.yancy.project.model.entity.User;
+import com.yancy.project.model.vo.UserTaskVo;
 import com.yancy.project.service.TagService;
 import com.yancy.project.service.TaskService;
 import com.yancy.project.mapper.TaskMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
 * @author yancy0109
@@ -59,6 +65,44 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task>
             BeanUtils.copyProperties(taskAddRequest, task);
             return this.save(task);
         }
+    }
+
+    @Override
+    public List<Task> getUserTasks(User loginUser) {
+        Long userId = loginUser.getId();
+        QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        // 结束时间越早 排序越靠前
+        queryWrapper.orderByAsc("finish_time");
+        List<Task> taskList = this.list(queryWrapper);
+        if (CollectionUtils.isEmpty(taskList)){
+            return new ArrayList<>();
+        }
+        return taskList;
+    }
+
+    @Override
+    public Page<UserTaskVo> getUserTasksPages(PageRequest pageRequest, User loginUser) {
+        Long userId = loginUser.getId();
+        IPage<Task> page = new Page<>();
+        long pageSize = pageRequest.getPageSize();
+        long currentPage = pageRequest.getCurrent();
+        // 排序字段
+        String sortField = pageRequest.getSortField();
+        // 排序顺序
+        String sortOrder = pageRequest.getSortOrder();
+
+        QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
+        page.setPages(0L);
+        page.setRecords(Lists.newArrayList());
+        page.setTotal(0L);
+        page.setSize(0L);
+        page.setCurrent(0L);
+
+        page.setPages(pageSize);
+        IPage<Task> taskIPage = this.page(page, queryWrapper);
+
+        return null;
     }
 
 
